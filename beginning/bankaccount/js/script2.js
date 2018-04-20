@@ -4,46 +4,57 @@ var $ = function (id) {
     return window.document.getElementById(id);
 };
 
-var bankAccount = function (ownername) {
+var bankAccount = function () {
     "use strict";
     // PRIVATE VARIABLES AND FUNCTIONS
-    var owner = ownername, balance = 0, getBalance, getOwnerName, withdrawal, deposit, displayMessage;
+    var owner, balance = 0, getBalance, getOwnerName, withdrawal, deposit, displayMessage;
     displayMessage = function (message) {
        $("display").innerHTML = message;
     };
     
+    getBalance = function () {
+        return balance;
+    };
+    
+    getOwnerName = function () {
+        return owner;
+    };
+    
+    
     // PUBLIC METHODS THAT HAVE ACCESS TO PRIVATE VARIABLES AND FUNCTIONS
-    return {     
-        getBalance: function () {
-            return balance;
+    return {
+        owner : getOwnerName(),
+        createAccount: function (ownerName) {
+            owner = ownerName;
+            displayMessage(getOwnerName() + "'s bank account has been created successfully");
+            return this;
         },
-        getOwnerName: function () {
-            return owner;
-        },
+        
         withdrawal: function (withdrawalAmount) {
-           var owner = this.getOwnerName();
-           if (withdrawalAmount > balance) {            
+         
+           if (withdrawalAmount > balance) {
+              
                window.alert(owner + "'s account balance is " + balance + ". This is the maximum amount you can withdrawal.");
            } else {
                balance -= withdrawalAmount;
-               displayMessage(owner + "'s account balance is " + this.getBalance());
+               displayMessage(owner + "'s account balance is " + getBalance());
                
            }       
         },
         deposit: function (depositAmount) {
            balance += depositAmount;
-           displayMessage(this.getOwnerName() + "'s account balance is " + this.getBalance());
+           displayMessage(owner + "'s account balance is " + getBalance());
         }     
     };
 };
 
 window.addEventListener("load", function () {
     "use strict";
-    var bankAcct;
+     var bankAcct = bankAccount();
     
     $("name").addEventListener("click", function(){
         var name = prompt("Please provide the name to create an account.");
-        bankAcct = bankAccount(name);
+        bankAcct = bankAcct.createAccount(name);
         
     });
     
