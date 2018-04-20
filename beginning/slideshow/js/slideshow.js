@@ -10,7 +10,6 @@ var createSlideshow = function () {
     img = { cache: [], counter: 0 };
     
     stopSlideShow = function () {
-        window.alert(timer);
         clearInterval(timer);
     };
     displayNextImage = function () {
@@ -55,7 +54,12 @@ var createSlideshow = function () {
                 nodes.image = arguments[0];
                 nodes.caption = arguments[1];
             }
-            window.alert(speed);
+            
+            // stop the slideshow and clear previous timer in order to set a new one
+            if (timer) {
+                 stopSlideShow();
+            }
+            
             timer = setInterval(displayNextImage, speed);
             return this;
         },
@@ -66,7 +70,6 @@ var createSlideshow = function () {
                 // 'THIS' IS THE CLICKED BUTTON
                 // 'ME' IS THE OBJECT LITERAL
                 if (play) {
-                    
                     stopSlideShow();
                 } else {
                     me.startSlideShow();
@@ -103,7 +106,6 @@ window.addEventListener("load", function () {
     // PAUSE THE SLIDESHOW
     //$("play_pause").onclick = slideshow.createToggleHandler();
      $("play_pause").addEventListener("click", slideshow.createToggleHandler());
-    //$("speed").onclick =prompt("The current speed is " + slideshow.getSpeed() + ". Please enter the spped you want", "2000");
     
     $("speed").addEventListener("click", function(){
          var promptSpeed = parseInt(prompt("The current speed is " + slideshow.getSpeed() + "  milliseconds. Please enter the image rotation speed"), 10);
